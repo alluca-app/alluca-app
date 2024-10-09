@@ -23032,6 +23032,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     cmdk: "npm:1.0.0"
     date-fns: "npm:^3.6.0"
+    humanize-string: "npm:2.1.0"
     lucide-react: "npm:^0.424.0"
     postcss: "npm:^8.4.41"
     postcss-loader: "npm:^8.1.1"

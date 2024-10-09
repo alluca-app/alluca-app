@@ -9,6 +9,8 @@
 
 import { Router, Route, Set, PrivateSet } from '@redwoodjs/router'
 
+import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
+
 import { useAuth } from './auth'
 import AppLayout from './layouts/AppLayout/AppLayout'
 import DefaultLayout from './layouts/DefaultLayout/DefaultLayout'
@@ -19,6 +21,14 @@ import BusinessPage from './pages/BusinessPage/BusinessPage'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <PrivateSet unauthenticated="home" roles={['ADMIN']}>
+        <Set wrap={ScaffoldLayout} title="Users" titleTo="users" buttonLabel="New User" buttonTo="newUser">
+          <Route path="/users/new" page={UserNewUserPage} name="newUser" />
+          <Route path="/users/{id}/edit" page={UserEditUserPage} name="editUser" />
+          <Route path="/users/{id}" page={UserUserPage} name="user" />
+          <Route path="/users" page={UserUsersPage} name="users" />
+        </Set>
+      </PrivateSet>
       <Route path="/" page={HomePage} name="home" />
       <PrivateSet unauthenticated="home">
         <Set wrap={AppLayout}>

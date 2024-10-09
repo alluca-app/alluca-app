@@ -1,4 +1,6 @@
-import { users } from './users'
+import type { User } from '@prisma/client'
+
+import { users, user, createUser, updateUser, deleteUser } from './users'
 import type { StandardScenario } from './users.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
@@ -12,5 +14,42 @@ describe('users', () => {
     const result = await users()
 
     expect(result.length).toEqual(Object.keys(scenario.user).length)
+  })
+
+  scenario('returns a single user', async (scenario: StandardScenario) => {
+    const result = await user({ id: scenario.user.one.id })
+
+    expect(result).toEqual(scenario.user.one)
+  })
+
+  scenario('creates a user', async () => {
+    const result = await createUser({
+      input: {
+        email: 'String94843',
+        hashedPassword: 'String',
+        salt: 'String',
+        roles: ['CLIENT'],
+      },
+    })
+
+    expect(result.updatedAt).toEqual(new Date('2024-10-05T09:59:39.504Z'))
+    expect(result.email).toEqual('String94843')
+  })
+
+  scenario('updates a user', async (scenario: StandardScenario) => {
+    const original = (await user({ id: scenario.user.one.id })) as User
+    const result = await updateUser({
+      id: original.id,
+      input: { lastName: 'new last name' },
+    })
+
+    expect(result.updatedAt).toEqual(new Date('2024-10-06T09:59:39.504Z'))
+  })
+
+  scenario('deletes a user', async (scenario: StandardScenario) => {
+    const original = (await deleteUser({ id: scenario.user.one.id })) as User
+    const result = await user({ id: original.id })
+
+    expect(result).toEqual(null)
   })
 })
